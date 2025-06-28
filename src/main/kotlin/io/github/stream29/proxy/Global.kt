@@ -37,6 +37,14 @@ val globalJson = Json {
     explicitNulls = false
 }
 
+val loggingJson = Json {
+    prettyPrint = true
+    isLenient = true
+    ignoreUnknownKeys = true
+    encodeDefaults = true
+    explicitNulls = false
+}
+
 val globalYaml = Yaml(
     configuration = YamlConfiguration(
         polymorphismStyle = PolymorphismStyle.Property,

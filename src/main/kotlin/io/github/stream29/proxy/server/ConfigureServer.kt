@@ -34,10 +34,11 @@ fun createLmStudioServer(config: LmStudioConfig): EmbeddedServer<CIOApplicationE
                 }
                 post("/api/v0/chat/completions") {
                     val request = call.receive<LChatCompletionRequest>()
-                    // Log complete incoming request
-                    lmStudioLogger.info("Received chat completion request: ${request.encodeJson()}")
-                    lmStudioLogger.info("Temperature: ${request.temperature}, Model: ${request.model}, Stream: ${request.stream}")
-                    
+                    if (config.logRequests) {
+                        lmStudioLogger.info("Received chat completion request: ${loggingJson.encodeToString(LChatCompletionRequest.serializer(), request)}")
+                        lmStudioLogger.info("Temperature: ${request.temperature}, Model: ${request.model}, Stream: ${request.stream}")
+                    }
+
                     val apiProvider = apiProviders[request.model.substringBefore('/')]
                     if (apiProvider == null) {
                         lmStudioLogger.error("Model not found: ${request.model}")
@@ -79,10 +80,11 @@ fun createOllamaServer(config: OllamaConfig): EmbeddedServer<CIOApplicationEngin
                 }
                 post("/api/chat") {
                     val request = call.receive<OChatRequest>()
-                    // Log complete incoming request
-                    ollamaLogger.info("Received chat request: ${request.encodeJson()}")
-                    ollamaLogger.info("Temperature: ${request.options?.temperature}, Model: ${request.model}, Stream: ${request.stream}")
-                    
+                    if (config.logRequests) {
+                        ollamaLogger.info("Received chat request: ${loggingJson.encodeToString(OChatRequest.serializer(), request)}")
+                        ollamaLogger.info("Temperature: ${request.options?.temperature}, Model: ${request.model}, Stream: ${request.stream}")
+                    }
+
                     val apiProvider = apiProviders[request.model.substringBefore('/')]
                     if (apiProvider == null) {
                         ollamaLogger.error("Model not found: ${request.model}")

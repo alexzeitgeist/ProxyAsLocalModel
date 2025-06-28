@@ -17,6 +17,7 @@ data class LmStudioConfig(
     val host: String = "0.0.0.0",
     val path: String = "/",
     val enabled: Boolean = true,
+    val logRequests: Boolean = false,
 )
 
 @Serializable
@@ -25,6 +26,7 @@ data class OllamaConfig(
     val host: String = "0.0.0.0",
     val path: String = "/",
     val enabled: Boolean = true,
+    val logRequests: Boolean = false,
 )
 
 @Serializable
